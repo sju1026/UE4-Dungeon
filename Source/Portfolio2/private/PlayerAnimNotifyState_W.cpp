@@ -12,7 +12,7 @@ void UPlayerAnimNotifyState_W::NotifyBegin(USkeletalMeshComponent* MeshComp, UAn
 		ABaseCharacter* Player = Cast<ABaseCharacter>(MeshComp->GetOwner());
 		if (Player != NULL) {
 			Player->Attack_Melee_W();
-
+			Player->mp -= 10.0f;
 			Player->isDuringAttack = true;
 		}
 	}

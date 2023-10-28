@@ -31,9 +31,6 @@ public:
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = true))
-		class UCameraComponent* cameraComp;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = true))
 		class USpringArmComponent* sprintAramComp;
 
 protected:
@@ -42,14 +39,39 @@ protected:
 	bool dash;
 	void Dashing();
 
-	UPROPERTY(EditAnywhere, Category = MyState)
-		float walkSpeed = 600.0f;
-	UPROPERTY(EditAnywhere, Category = MyState)
-		float sprintSpeed = 900.0f;
 	void SprintStart();
 	void SprintEnd();
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = true))
+		class UCameraComponent* cameraComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = Montage)
 		UAnimMontage* dashMontage;
+
+	UPROPERTY(EditAnywhere, Category = MyState)
+		float walkSpeed = 600.0f;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+	FTimerHandle playerTimer;
+
+	void Stop();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float myHPnum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FString myHPbar_Text;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float mpNum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FString myMPbar_Text;
+
+	void MpUpdate();
+
+	UPROPERTY(EditAnywhere, Category = MyState)
+		float mpUpdateRate;
 };

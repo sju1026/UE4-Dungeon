@@ -14,4 +14,16 @@ class PORTFOLIO2_API APortfolio2GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+protected:
+	APortfolio2GameModeBase();
+
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
+		TSubclassOf<UUserWidget>HUDWidgetClass;
+
+	UUserWidget* CurrentWidget;
+
+public:
+	// void ChaingeUI();
 };

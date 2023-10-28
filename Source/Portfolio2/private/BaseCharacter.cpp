@@ -19,6 +19,9 @@ ABaseCharacter::ABaseCharacter()
 
 	health = 0.f;
 	maxHealth = 100.0f;
+
+	mp = 0.0f;
+	maxMp = 100.0f;
 }
 
 // ==================================Weapon==================================
@@ -120,6 +123,7 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	health = maxHealth;
+	mp = maxMp;
 }
 
 // Called every frame

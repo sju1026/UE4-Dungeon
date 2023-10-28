@@ -6,7 +6,13 @@
 #include "GameFramework/Actor.h"
 #include "BaseCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Monster.h"
+#include "Teleport.h"
+#include "Engine/TriggerBox.h"
+#include "Engine/DataTable.h"
 #include "PlayerWeapon.generated.h"
+
+
 
 UCLASS()
 class PORTFOLIO2_API APlayerWeapon : public AActor
@@ -21,13 +27,6 @@ public:
 	void AttachMeshToPawn();
 	void OnEquip(const APlayerWeapon* LastWeapon);
 	void OnUnEqip();
-
-private:
-	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
-		USkeletalMeshComponent* WeaponMesh;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
-		class UBoxComponent* WeaponCollision;
 
 protected:
 
@@ -46,6 +45,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MyFX")
 		UParticleSystem* HitFX;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
+		class UBoxComponent* WeaponCollision;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
+		USkeletalMeshComponent* WeaponMesh;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon State")
 		float weaponDamage;
+
+	UPROPERTY(EditAnywhere, Category = SpawnSetting)
+		TArray<class AActor*> spawnPoint;
+
+	void FindSpawnPoint();
+
 };

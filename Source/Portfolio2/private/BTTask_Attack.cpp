@@ -35,5 +35,9 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& owner_co
 
 bool UBTTask_Attack::montage_has_finished(AMonster* const npcBot)
 {
+	if (npcBot->MName == "Boss" && npcBot->health <= 100)
+	{
+		return npcBot->GetMesh()->GetAnimInstance()->Montage_GetIsStopped(npcBot->get_finalMontage());
+	}
 	return npcBot->GetMesh()->GetAnimInstance()->Montage_GetIsStopped(npcBot->get_montage());
 }

@@ -24,6 +24,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = MyState)
 		float maxHealth;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = MyState)
+		float mp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = MyState)
+		float maxMp;
+	
+
 	// ===========================Weapon[Inventory]=================================
 
 	USkeletalMeshComponent* GetSpesificPawnMesh()const;
@@ -47,11 +54,12 @@ protected:
 
 	void SpawnDefaultInventory();
 
-	UPROPERTY(EditDefaultsOnly, Category = Invetory)
+public:
+	UPROPERTY(EditAnywhere, Category = Invetory)
 		TArray<TSubclassOf<class APlayerWeapon>>DefaultInventoryClasses;
 
 	// =============================================================================
-
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

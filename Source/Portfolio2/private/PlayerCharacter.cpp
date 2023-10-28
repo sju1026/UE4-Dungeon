@@ -6,6 +6,10 @@
 #include <Engine/Classes/Camera/CameraComponent.h>
 #include <Engine/Classes/GameFramework/CharacterMovementComponent.h>
 #include <Engine/Classes/GameFramework/SpringArmComponent.h>
+#include "Components/WidgetComponent.h"
+#include "UI_InGame.h"
+#include <Chain.h>
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -37,6 +41,7 @@ APlayerCharacter::APlayerCharacter()
 	cameraComp->bUsePawnControlRotation = false;
 
 	dash = false;
+	mpUpdateRate = 5.0f;
 }
 
 void APlayerCharacter::PostInitializeComponents()
@@ -57,6 +62,16 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	myHPnum = (health / maxHealth * 100) * 0.01f;
+
+	myHPbar_Text = FString::SanitizeFloat(health) + "/" + FString::SanitizeFloat(maxHealth);
+
+	mpNum = (mp / maxMp * 100) * 0.01f;
+
+	myMPbar_Text = FString::SanitizeFloat(mp) + "/" + FString::SanitizeFloat(maxMp);
+
+	FTimerHandle mpHandle;
+	GetWorldTimerManager().SetTimer(mpHandle, this, &APlayerCharacter::MpUpdate, mpUpdateRate, false);
 }
 
 // Called to bind functionality to input
@@ -91,11 +106,41 @@ void APlayerCharacter::Dashing()
 
 void APlayerCharacter::SprintStart()
 {
-	GetCharacterMovement()->MaxWalkSpeed = sprintSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed + 400.0f;
 }
 
 void APlayerCharacter::SprintEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+}
+
+void APlayerCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (OtherActor->IsA(AChain::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Hit!");
+		GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+		GetWorldTimerManager().SetTimer(playerTimer, this, &APlayerCharacter::Stop, 1.5f);
+	}
+}
+
+void APlayerCharacter::Stop()
+{
+	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
+}
+
+void APlayerCharacter::MpUpdate()
+{
+	if (mp >= maxMp)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Mp is Max!");
+		mp = maxMp;
+	}
+	else if (mp < maxMp)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "Mp+10.0f!");
+		mp += 10.0f;
+	}
+
 }
 
